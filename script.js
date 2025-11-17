@@ -46,10 +46,20 @@ window.onscroll = () => {
 const skillsSection = document.querySelector('.skills');
 const progressBars = document.querySelectorAll('.progress-line');
 
+// Set dynamic width based on percentage
+progressBars.forEach(bar => {
+  const skillBar = bar.closest('.skill-bar');
+  const percentageText = skillBar.querySelector('.percentage').textContent;
+  const percentageValue = percentageText.replace('%', '');
+  bar.style.setProperty('--skill-width', percentageValue + '%');
+});
+
 const skillsObserver = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
       progressBars.forEach(bar => {
+        const width = bar.style.getPropertyValue('--skill-width');
+        bar.style.width = width;
         bar.style.animation = 'fillBar 2s ease-out forwards';
       });
     }
